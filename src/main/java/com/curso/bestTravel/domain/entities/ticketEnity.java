@@ -16,7 +16,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Data
 @Builder
-public class ticketEnity implements Serializable {
+public class TicketEnity implements Serializable {
     @Id
     private UUID id;
     private LocalDate departureDate;
@@ -27,4 +27,8 @@ public class ticketEnity implements Serializable {
 @ManyToOne
 @JoinColumn(name = "fly_id")
     private FlyEntity fly;
+
+    @ManyToOne
+    @JoinColumn(name = "tour_id",nullable = false)
+    private TourEntity tour;
 }

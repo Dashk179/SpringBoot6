@@ -17,7 +17,7 @@ import java.io.Serializable;
 @Builder
 public class CustomerEntity  implements Serializable {
     @Id
-    private String id;
+    private String dni;
     @Column(length = 50)
     private String fullName;
     @Column(length = 20)

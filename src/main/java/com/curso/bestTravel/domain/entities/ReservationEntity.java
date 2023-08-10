@@ -31,5 +31,9 @@ public class ReservationEntity implements Serializable {
 
 @ManyToOne
 @JoinColumn(name = "hotel_id")
-    private HotelEntity hotel;
+private HotelEntity hotel;
+
+    @ManyToOne
+    @JoinColumn(name = "tour_id",nullable = false)
+    private TourEntity tour;
 }
