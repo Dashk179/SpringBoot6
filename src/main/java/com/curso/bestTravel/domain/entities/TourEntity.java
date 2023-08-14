@@ -1,10 +1,8 @@
 package com.curso.bestTravel.domain.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
 import java.util.Set;
 import java.io.Serializable;
 
@@ -18,6 +16,8 @@ public class TourEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToMany(
             cascade = CascadeType.ALL,//
             fetch = FetchType.EAGER,//El eager hace el join y carga todo el objeto
@@ -26,15 +26,17 @@ public class TourEntity implements Serializable {
     )
     private Set<ReservationEntity> reservations;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToMany(
             cascade = CascadeType.ALL,//
             fetch = FetchType.EAGER,//El eager hace el join y carga todo el objeto
             orphanRemoval = true,//Si alguno de estos objetos queda huerfano osea queda sin llave foranea se elimina
             mappedBy = "tour"
     )
-    private Set<TicketEnity> tickets;
-
+    private Set<TicketEntity> tickets;
     @ManyToOne
     @JoinColumn(name = "id_customer")
     private CustomerEntity customer;
+
 }

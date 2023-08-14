@@ -2,10 +2,7 @@ package com.curso.bestTravel.domain.entities;
 
 import com.curso.bestTravel.util.AeroLine;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -33,11 +30,13 @@ public class FlyEntity implements Serializable {
     @Enumerated(EnumType.STRING)
     private AeroLine aeroLine;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToMany(
             cascade = CascadeType.ALL,//
             fetch = FetchType.EAGER,//El eager hace el join y carga todo el objeto
             orphanRemoval = true,//Si alguno de estos objetos queda huerfano osea queda sin llave foranea se elimina
             mappedBy = "fly"
     )
-    private Set<TicketEnity> tickets;
+    private Set<TicketEntity> tickets;
     }
