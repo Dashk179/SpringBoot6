@@ -16,7 +16,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Data
 @Builder
-public class TicketEnity implements Serializable {
+public class TicketEntity implements Serializable {
     @Id
     private UUID id;
     private LocalDate departureDate;
@@ -24,11 +24,15 @@ public class TicketEnity implements Serializable {
     private LocalDate purchaseDate;
     private BigDecimal price;
 
-@ManyToOne
-@JoinColumn(name = "fly_id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "fly_id")
     private FlyEntity fly;
 
-    @ManyToOne
-    @JoinColumn(name = "tour_id",nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "tour_id", nullable = true)
     private TourEntity tour;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "customer_id")
+    private CustomerEntity customer;
 }
