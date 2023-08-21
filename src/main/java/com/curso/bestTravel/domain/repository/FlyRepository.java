@@ -6,7 +6,9 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
 public interface FlyRepository extends JpaRepository<FlyEntity,Long> {
 
@@ -21,4 +23,7 @@ public interface FlyRepository extends JpaRepository<FlyEntity,Long> {
 
     @Query("select f from fly f where f.origin_name = :origin and f.destiny_name = :destiny")//select * from fly where origin_name = 'Grecia' and destiny_name = 'Mexico';
     Set<FlyEntity> selectOriginDestiny(String origin,String destiny); //Lista de datos
+
+    @Query("select f from fly f join fetch f.tickets t where t.id =:id")
+    Optional<FlyEntity> findByTicketId(UUID id);
 }
