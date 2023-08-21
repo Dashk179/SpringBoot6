@@ -24,6 +24,6 @@ public interface FlyRepository extends JpaRepository<FlyEntity,Long> {
     @Query("select f from fly f where f.origin_name = :origin and f.destiny_name = :destiny")//select * from fly where origin_name = 'Grecia' and destiny_name = 'Mexico';
     Set<FlyEntity> selectOriginDestiny(String origin,String destiny); //Lista de datos
 
-    @Query("select f from fly f join fetch f.tickets t where t.id =:id")
+    @Query("select f from fly f join fetch f.tickets t where t.id =:id")//select  * from fly join ticket t on fly.id = t.fly_id where fly.id =?;
     Optional<FlyEntity> findByTicketId(UUID id);
 }
