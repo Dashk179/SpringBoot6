@@ -87,5 +87,14 @@ public class BestTravelApplication  implements CommandLineRunner {
 			.totalDays(1)
 			.price(hotel.getPrice().multiply(BigDecimal.TEN))
 			.build();
+
+		System.out.println("---SAVING---");
+
+		//Guardamos un tour a partir de nuestras relaciones inversas y podamos consultarlos apartir de un join
+		tour.addReservation(reservation);
+		tour.updateReservations();
+		tour.addTicket(ticket);
+		tour.updateTicket();
+		this.tourRepository.save(tour);
 	}
 }
