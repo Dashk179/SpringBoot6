@@ -34,7 +34,7 @@ public class TourEntity implements Serializable {
     @OneToMany(
             cascade = CascadeType.ALL,//
             fetch = FetchType.EAGER,//El eager hace el join y carga todo el objeto
-            orphanRemoval = true,//Si alguno de estos objetos queda huerfano osea queda sin llave foranea se elimina
+            orphanRemoval = true,//Si alguno de estos objetos queda huerfano osea queda sin llave foranea y se elimina
             mappedBy = "tour"
     )
     private Set<TicketEntity> tickets;

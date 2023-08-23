@@ -95,6 +95,9 @@ public class BestTravelApplication  implements CommandLineRunner {
 		tour.updateReservations();
 		tour.addTicket(ticket);
 		tour.updateTicket();
-		this.tourRepository.save(tour);
+
+		var tourSaved = this.tourRepository.save(tour);
+		Thread.sleep(8000);
+		this.tourRepository.deleteById(tourSaved.getId());
 	}
 }
