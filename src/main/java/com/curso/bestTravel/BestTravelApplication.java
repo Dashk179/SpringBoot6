@@ -1,5 +1,8 @@
 package com.curso.bestTravel;
 
+import com.curso.bestTravel.domain.entities.ReservationEntity;
+import com.curso.bestTravel.domain.entities.TicketEntity;
+import com.curso.bestTravel.domain.entities.TourEntity;
 import com.curso.bestTravel.domain.repository.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
@@ -7,6 +10,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @SpringBootApplication
@@ -41,60 +46,46 @@ public class BestTravelApplication  implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-//		var fly =  flyRepository.findById(15L).get();
-//		var hotel = hotelRepository.findById(7L).get();
-//		try {
-//			var ticketId = UUID.fromString("42345678-1234-5678-5233-567812345678");
-//			var ticket = ticketRepository.findById(ticketId);
-//
-//			if (ticket.isPresent()) {
-//				// Ticket encontrado
-//				log.info("Ticket encontrado: {}", ticket.get());
-//			} else {
-//				// Ticket no encontrado
-//				log.warn("Ticket no encontrado para el ID: {}", ticketId);
-//			}
-//		} catch (IllegalArgumentException e) {
-//			// Captura excepción si el UUID es inválido
-//			log.error("Error al convertir el UUID: {}", e.getMessage());
-//		} catch (Exception e) {
-//			// Captura otras excepciones
-//			log.error("Error al buscar el ticket: {}", e.getMessage());
-//		}
-//
-//		var reservation = reservationRepository.findById(UUID.fromString("22345678-1234-5678-1234-567812345678")).get();
-//		var ticket = ticketRepository.findById(UUID.fromString("42345678-1234-5678-5233-567812345678")).get();
-//		var customer = customerRepository.findById("BBMB771012HMCRR022").get();
-//
-//		log.info(String.valueOf(reservation));
-//		log.info(String.valueOf(ticket));
-//		log.info(String.valueOf(customer));
-//		log.info(String.valueOf(fly));
-//		log.info(String.valueOf(hotel));
+		//Extraemos un cliente
+	var customer = customerRepository.findById("GOTW771012HMRGR087").orElseThrow();
+	log.info("Client name = " + customer.getFullName());
 
-		//Probando nuestras consultas en JPQL
+	//Extraemos un vuelo
+	var fly = flyRepository.findById(11L).orElseThrow();
+		log.info("fly" + fly.getOrigin_name() + "-"+ fly.getDestiny_name());
 
-		//this.flyRepository.selectLessPrice(BigDecimal.valueOf(20)).forEach(f -> System.out.println(f));
+	//Extraemos un hotel
+	var hotel = hotelRepository.findById(3L).orElseThrow();
+		log.info("hotel" + hotel);
 
-		//this.flyRepository.selectBetweenPrice(BigDecimal.valueOf(10),BigDecimal.valueOf(15)).forEach(System.out::println);
+		//Creamos un tour
+	var tour = TourEntity.builder()
+			.customer(customer).build();
 
-//		this.flyRepository.selectOriginDestiny("Grecia","Mexico").forEach(System.out::println);
-
-//		var fly = flyRepository.findByTicketId(UUID.fromString("12345678-1234-5678-2236-567812345678"));
-//		System.out.println(fly);
+	//Creamos un ticket y anexamos sus llaves foraneas
+	var ticket = TicketEntity.builder()
+			.id(UUID.randomUUID())
+			.price(fly.getPrice().multiply(BigDecimal.TEN))
+			.arrivalDate(LocalDate.now())
+			.departureDate(LocalDate.now())
+			.purchaseDate(LocalDate.now())
+			.customer(customer)//Llave foranea
+			.tour(tour)//Llave foranea
+			.fly(fly)//Llave foranea
+			.build();
 
 
-		//Queries personalizados con lenguaje inclusivo de spring data
-
-		//hotelRepository.findByPriceLessThan(BigDecimal.valueOf(100)).forEach(System.out::println);
-
-//		hotelRepository.findByPriceBetween(BigDecimal.valueOf(100),
-//				BigDecimal.valueOf(150)).forEach(System.out::println);
-
-//		hotelRepository.findByRatingGreaterThan(3).forEach(System.out::println);
-
-		var hotelReservation = hotelRepository.findByReservationId(UUID.fromString("12345678-1234-5678-1234-567812345678"));
-		System.out.println(hotelReservation);
-
+	//Creamos una reservation y anexamos sus llaves foraneas
+	var reservation = ReservationEntity.builder()
+			.id(UUID.randomUUID())
+			.dateTimeReservation(LocalDateTime.now())
+			.dateEnd(LocalDate.now().plusDays(2))
+			.dateStart(LocalDate.now().plusDays(1))
+			.hotel(hotel)//Llave foranea
+			.customer(customer)//Llave foranea
+			.tour(tour)//Llave foranea
+			.totalDays(1)
+			.price(hotel.getPrice().multiply(BigDecimal.TEN))
+			.build();
 	}
 }
