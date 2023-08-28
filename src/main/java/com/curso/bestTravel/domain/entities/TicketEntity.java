@@ -25,15 +25,15 @@ public class TicketEntity implements Serializable {
     private LocalDate purchaseDate;
     private BigDecimal price;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fly_id")
     private FlyEntity fly;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tour_id", nullable = true)
     private TourEntity tour;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
     private CustomerEntity customer;
 }
