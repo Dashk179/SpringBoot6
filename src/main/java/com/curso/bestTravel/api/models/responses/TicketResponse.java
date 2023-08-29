@@ -1,4 +1,4 @@
-package com.curso.bestTravel.api.responses;
+package com.curso.bestTravel.api.models.responses;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

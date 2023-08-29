@@ -1,4 +1,4 @@
-package com.curso.bestTravel.api.responses;
+package com.curso.bestTravel.api.models.responses;
 
 import com.curso.bestTravel.util.AeroLine;
 import jakarta.persistence.Column;
