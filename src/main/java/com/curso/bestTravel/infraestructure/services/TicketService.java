@@ -8,6 +8,7 @@ import com.curso.bestTravel.domain.repository.CustomerRepository;
 import com.curso.bestTravel.domain.repository.FlyRepository;
 import com.curso.bestTravel.domain.repository.TicketRepository;
 import com.curso.bestTravel.infraestructure.abstract_services.ITicketService;
+import com.curso.bestTravel.util.BestTravelUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -39,8 +40,8 @@ public class TicketService implements ITicketService {
                 .customer(customer)
                 .price(fly.getPrice().add(fly.getPrice().multiply(charge_price_percentage)))
                 .purchaseDate(LocalDate.now())
-                .arrivalDate(LocalDateTime.now())
-                .departureDate(LocalDateTime.now())
+                .arrivalDate(BestTravelUtil.getRandomSoon())
+                .departureDate(BestTravelUtil.getRandomLatter())
                 .build();
 
         var ticketPersisted = this.ticketRepository.save(ticketToPersist);
@@ -63,8 +64,8 @@ public class TicketService implements ITicketService {
 
         ticketToUpdate.setFly(fly);
         ticketToUpdate.setPrice(fly.getPrice().add(fly.getPrice().multiply(charge_price_percentage)));
-        ticketToUpdate.setArrivalDate(LocalDateTime.now());
-        ticketToUpdate.setDepartureDate(LocalDateTime.now());
+        ticketToUpdate.setArrivalDate(BestTravelUtil.getRandomSoon());
+        ticketToUpdate.setDepartureDate(BestTravelUtil.getRandomLatter());
 
         var ticketUpdate = this.ticketRepository.save(ticketToUpdate);
         log.info("ticket updated with id {}",ticketUpdate.getId() );
