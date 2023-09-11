@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Data
 @Builder
-public class hotelResponse implements Serializable {
+public class HotelResponse implements Serializable {
 
     private Long id;
     private String name;

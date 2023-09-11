@@ -38,7 +38,7 @@ public class TicketService implements ITicketService {
                 .id(UUID.randomUUID())
                 .fly(fly)
                 .customer(customer)
-                .price(fly.getPrice().add(fly.getPrice().multiply(charge_price_percentage)))
+                .price(fly.getPrice().add(fly.getPrice().multiply(charger_price_percentage)))
                 .purchaseDate(LocalDate.now())
                 .arrivalDate(BestTravelUtil.getRandomSoon())
                 .departureDate(BestTravelUtil.getRandomLatter())
@@ -63,7 +63,7 @@ public class TicketService implements ITicketService {
         var fly = flyRepository.findById(ticketRequest.getIdFly()).orElseThrow();
 
         ticketToUpdate.setFly(fly);
-        ticketToUpdate.setPrice(fly.getPrice().add(fly.getPrice().multiply(charge_price_percentage)));
+        ticketToUpdate.setPrice(fly.getPrice().add(fly.getPrice().multiply(charger_price_percentage)));
         ticketToUpdate.setArrivalDate(BestTravelUtil.getRandomSoon());
         ticketToUpdate.setDepartureDate(BestTravelUtil.getRandomLatter());
 
@@ -81,7 +81,7 @@ public class TicketService implements ITicketService {
     @Override
     public BigDecimal findPrice(Long flyId) {
         var fly = this.flyRepository.findById(flyId).orElseThrow();
-       return fly.getPrice().add(fly.getPrice().multiply(charge_price_percentage));
+       return fly.getPrice().add(fly.getPrice().multiply(charger_price_percentage));
 
     }
 
@@ -96,7 +96,7 @@ public class TicketService implements ITicketService {
         return response;
     }
 
-    private static final BigDecimal charge_price_percentage = BigDecimal.valueOf(0.25);
+    private static final BigDecimal charger_price_percentage = BigDecimal.valueOf(0.25);
 
 
 }
