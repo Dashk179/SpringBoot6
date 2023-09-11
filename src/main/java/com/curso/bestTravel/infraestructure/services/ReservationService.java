@@ -54,17 +54,35 @@ public class ReservationService implements IReservationService {
     }
 
     @Override
-    public ReservationResponse read(UUID uuid) {
-        return null;
+    public ReservationResponse read(UUID id) {
+        var reservationFromDB = this.reservationRepository.findById(id).orElseThrow();
+        return this.entityToResponse(reservationFromDB);
     }
 
     @Override
-    public ReservationResponse update(ReservationRequest reservationRequest, UUID uuid) {
-        return null;
+    public ReservationResponse update(ReservationRequest reservationRequest, UUID id) {
+        var hotel = this.hotelRepository.findById(reservationRequest.getIdHotel()).orElseThrow();
+
+        var reservationToUpdate = this.reservationRepository.findById(id).orElseThrow();
+
+        reservationToUpdate.setHotel(hotel);
+        reservationToUpdate.setTotalDays(reservationRequest.getTotalDays());
+        reservationToUpdate.setDateTimeReservation(LocalDateTime.now());
+        reservationToUpdate.setDateStart(LocalDate.now());
+        reservationToUpdate.setDateEnd(LocalDate.now().plusDays(reservationRequest.getTotalDays()));
+        reservationToUpdate.setPrice(hotel.getPrice().add(hotel.getPrice().multiply(charger_price_percentage)));
+
+        var reservationUpdate =this.reservationRepository.save(reservationToUpdate);
+
+        log.info("Reservation updated with id {}",reservationUpdate.getId() );
+
+        return this.entityToResponse(reservationUpdate);
     }
 
     @Override
-    public void delete(UUID uuid) {
+    public void delete(UUID id) {
+        var reservationToDelete = reservationRepository.findById(id).orElseThrow();
+        this.reservationRepository.delete(reservationToDelete);
 
     }
 
@@ -76,6 +94,12 @@ public class ReservationService implements IReservationService {
         BeanUtils.copyProperties(entity.getHotel(),hotelResponse);
         response.setHotel(hotelResponse);
         return response;
+    }
+
+    public BigDecimal findPrice(Long hotelId) {
+        var hotel = hotelRepository.findById(hotelId).orElseThrow();
+        return hotel.getPrice().add(hotel.getPrice().multiply(charger_price_percentage));
+
     }
 
     private static final BigDecimal charger_price_percentage = BigDecimal.valueOf(0.20);
