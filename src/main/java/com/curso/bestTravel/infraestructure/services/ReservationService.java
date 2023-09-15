@@ -102,6 +102,6 @@ public class ReservationService implements IReservationService {
 
     }
 
-    private static final BigDecimal charger_price_percentage = BigDecimal.valueOf(0.20);
+    public static final BigDecimal charger_price_percentage = BigDecimal.valueOf(0.20);
 
 }
