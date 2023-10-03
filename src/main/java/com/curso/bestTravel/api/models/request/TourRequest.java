@@ -14,7 +14,7 @@ import java.util.Set;
 @Builder
 public class TourRequest implements Serializable {
 
-    public Serializable customerId;
+    public String customerId;
     public Set<TourFlyRequest> fligths;
     public Set<TourHotelRequest> hotels;
 }

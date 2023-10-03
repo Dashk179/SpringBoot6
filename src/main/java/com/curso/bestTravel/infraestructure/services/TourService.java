@@ -2,6 +2,8 @@ package com.curso.bestTravel.infraestructure.services;
 
 import com.curso.bestTravel.api.models.request.TourFlyRequest;
 import com.curso.bestTravel.api.models.request.TourRequest;
+import com.curso.bestTravel.api.models.responses.TourResponse;
+import com.curso.bestTravel.domain.entities.*;
 import com.curso.bestTravel.domain.repository.CustomerRepository;
 import com.curso.bestTravel.domain.repository.FlyRepository;
 import com.curso.bestTravel.domain.repository.HotelRepository;
@@ -12,7 +14,10 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Transactional
 @Service
@@ -27,17 +32,36 @@ public class TourService implements ITourService {
 
 
     @Override
-    public TourFlyRequest create(TourRequest tourRequest) {
+    public TourResponse create(TourRequest request) {
+
+        var costumer = customerRepository.findById(request.getCustomerId()).orElseThrow();
+        var flights = new HashSet<FlyEntity>();
+        request.getFligths().forEach(fly->flights.add(this.flyRepository.findById(fly.getId()).orElseThrow()));
+        var hotels = new HashMap<HotelEntity,Integer>();
+        request.getHotels().forEach(hotel->hotels.put(this.hotelRepository.findById(hotel.getId()).orElseThrow(),hotel.getTotalDays()));
+
+        var tourToSave = TourEntity.builder()
+                .tickets(this.tourHelper.createTickets(flights,costumer))
+                .reservations(this.tourHelper.createReservations(hotels,costumer))
+                .customer(costumer)
+                .build();
+
+        var tourSaved = this.tourRepository.save(tourToSave);
+
+        return TourResponse.builder()
+                .reservationIds(tourSaved.getReservations().stream().map(ReservationEntity::getId).collect(Collectors.toSet()))
+                .ticketIds(tourSaved.getTickets().stream().map(TicketEntity::getId).collect(Collectors.toSet()))
+                .id(tourSaved.getId())
+                .build();
+    }
+
+    @Override
+    public TourResponse read(Long aLong) {
         return null;
     }
 
     @Override
-    public TourFlyRequest read(Long aLong) {
-        return null;
-    }
-
-    @Override
-    public TourFlyRequest update(TourRequest tourRequest, Long aLong) {
+    public TourResponse update(TourRequest tourRequest, Long aLong) {
         return null;
     }
 
