@@ -36,9 +36,12 @@ public class TourService implements ITourService {
 
         var costumer = customerRepository.findById(request.getCustomerId()).orElseThrow();
         var flights = new HashSet<FlyEntity>();
-        request.getFligths().forEach(fly->flights.add(this.flyRepository.findById(fly.getId()).orElseThrow()));
+
+        request.getFligths().forEach(fly -> flights.add(this.flyRepository.findById(fly.getId()).orElseThrow()));
+
         var hotels = new HashMap<HotelEntity,Integer>();
-        request.getHotels().forEach(hotel->hotels.put(this.hotelRepository.findById(hotel.getId()).orElseThrow(),hotel.getTotalDays()));
+
+        request.getHotels().forEach(hotel -> hotels.put(this.hotelRepository.findById(hotel.getId()).orElseThrow(),hotel.getTotalDays()));
 
         var tourToSave = TourEntity.builder()
                 .tickets(this.tourHelper.createTickets(flights,costumer))
@@ -49,15 +52,38 @@ public class TourService implements ITourService {
         var tourSaved = this.tourRepository.save(tourToSave);
 
         return TourResponse.builder()
-                .reservationIds(tourSaved.getReservations().stream().map(ReservationEntity::getId).collect(Collectors.toSet()))
-                .ticketIds(tourSaved.getTickets().stream().map(TicketEntity::getId).collect(Collectors.toSet()))
+                .reservationIds(tourSaved.getReservations()
+                        .stream()
+                        .map(ReservationEntity::getId)
+                        .collect(Collectors.toSet()))
+
+                .ticketIds(tourSaved.getTickets()
+                        .stream()
+                        .map(TicketEntity::getId)
+                        .collect(Collectors.toSet()))
+
                 .id(tourSaved.getId())
                 .build();
     }
 
     @Override
-    public TourResponse read(Long aLong) {
-        return null;
+    public TourResponse read(Long id) {
+        var tourFromDb = this.tourRepository.findById(id).orElseThrow();
+
+        return TourResponse.builder()
+                .reservationIds(tourFromDb.getReservations()
+                        .stream()
+                        .map(ReservationEntity::getId)
+                        .collect(Collectors.toSet()))
+
+                .ticketIds(tourFromDb.getTickets()
+                        .stream()
+                        .map(TicketEntity::getId)
+                        .collect(Collectors.toSet()))
+
+                .id(tourFromDb.getId())
+                .build();
+
     }
 
     @Override
@@ -66,7 +92,9 @@ public class TourService implements ITourService {
     }
 
     @Override
-    public void delete(Long aLong) {
+    public void delete(Long id) {
+        var tourToDelete = this.tourRepository.findById(id).orElseThrow();
+        this.tourRepository.delete(tourToDelete);
 
     }
 
