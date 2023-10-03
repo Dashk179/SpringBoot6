@@ -1,6 +1,5 @@
 package com.curso.bestTravel.infraestructure.services;
 
-import com.curso.bestTravel.api.models.request.TourFlyRequest;
 import com.curso.bestTravel.api.models.request.TourRequest;
 import com.curso.bestTravel.api.models.responses.TourResponse;
 import com.curso.bestTravel.domain.entities.*;
@@ -37,7 +36,7 @@ public class TourService implements ITourService {
         var costumer = customerRepository.findById(request.getCustomerId()).orElseThrow();
         var flights = new HashSet<FlyEntity>();
 
-        request.getFligths().forEach(fly -> flights.add(this.flyRepository.findById(fly.getId()).orElseThrow()));
+        request.getFlights().forEach(fly -> flights.add(this.flyRepository.findById(fly.getId()).orElseThrow()));
 
         var hotels = new HashMap<HotelEntity,Integer>();
 
