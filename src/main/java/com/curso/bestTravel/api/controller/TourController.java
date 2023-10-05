@@ -40,12 +40,12 @@ public class TourController{
          Path: Actualizamos unicamente una propiedad del objeto.
          En este caso unicamente estamos actualizando su lista de tours
       */
-     @PatchMapping(path = "{tourId/remove_ticket/[ticketId }")
+     @PatchMapping(path = "{tourId}/remove_ticket/{ticketId}")
     public ResponseEntity<Void> deleteTicket(@PathVariable Long tourId,@PathVariable UUID ticketId){
        this.tourService.removeTicket(tourId,ticketId);
        return ResponseEntity.noContent().build();
      }
-     @PatchMapping(path = "{tourId/add_ticket/[flyId }")
+     @PatchMapping(path = "{tourId}/add_ticket/{flyId}")
     public ResponseEntity<Map<String,UUID>> postTicket(@PathVariable Long tourId, @PathVariable Long flyId){
        var response = Collections.singletonMap("ticketId",this.tourService.addTicket(tourId,flyId));
        return ResponseEntity.ok(response);

@@ -105,7 +105,7 @@ public class TourService implements ITourService {
     }
 
     @Override
-    public UUID addTicket(Long flyId, Long tourId) {
+    public UUID addTicket(Long tourId,Long flyId) {
         var tourUpdate = this.tourRepository.findById(tourId).orElseThrow();
         var fly = this.flyRepository.findById(flyId).orElseThrow();
         var ticket = this.tourHelper.createTicket(fly,tourUpdate.getCustomer());
