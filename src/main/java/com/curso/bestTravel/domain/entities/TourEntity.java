@@ -60,7 +60,7 @@ public class TourEntity implements Serializable {
     public void addTicket(TicketEntity ticket ){
         if (Objects.isNull(this.tickets)) this.tickets= new  HashSet<>();
         this.tickets.add(ticket);
-        this.reservations.forEach(reservation -> reservation.setTour(this));
+        this.tickets.forEach(t -> t.setTour(this));
     }
 
 }

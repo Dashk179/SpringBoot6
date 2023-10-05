@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
+import java.util.Collections;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -32,5 +34,20 @@ public class TourController{
     public ResponseEntity<Void> delete(@PathVariable Long id){
        this.tourService.delete(id);
        return ResponseEntity.noContent().build();
+     }
+     /*La diferencia entre el put y pacth
+         Put: Actualizamos todo el objeto
+         Path: Actualizamos unicamente una propiedad del objeto.
+         En este caso unicamente estamos actualizando su lista de tours
+      */
+     @PatchMapping(path = "{tourId/remove_ticket/[ticketId }")
+    public ResponseEntity<Void> deleteTicket(@PathVariable Long tourId,@PathVariable UUID ticketId){
+       this.tourService.removeTicket(tourId,ticketId);
+       return ResponseEntity.noContent().build();
+     }
+     @PatchMapping(path = "{tourId/add_ticket/[flyId }")
+    public ResponseEntity<Map<String,UUID>> postTicket(@PathVariable Long tourId, @PathVariable Long flyId){
+       var response = Collections.singletonMap("ticketId",this.tourService.addTicket(tourId,flyId));
+       return ResponseEntity.ok(response);
      }
 }
