@@ -11,6 +11,7 @@ import com.curso.bestTravel.domain.repository.CustomerRepository;
 import com.curso.bestTravel.domain.repository.HotelRepository;
 import com.curso.bestTravel.domain.repository.ReservationRepository;
 import com.curso.bestTravel.infraestructure.abstract_services.IReservationService;
+import com.curso.bestTravel.infraestructure.helpers.CustomerHelper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -32,6 +33,7 @@ public class ReservationService implements IReservationService {
     private final HotelRepository hotelRepository;
     private final CustomerRepository customerRepository;
     private final ReservationRepository reservationRepository;
+    private final CustomerHelper customerHelper;
 
     @Override
     public ReservationResponse create(ReservationRequest reservationRequest) {
@@ -50,6 +52,7 @@ public class ReservationService implements IReservationService {
                 .build();
 
         var reservationPersisted = reservationRepository.save(reservationToPersist);
+        customerHelper.incrase(customer.getDni(), ReservationService.class);
         return this.entityToResponse(reservationPersisted);
     }
 

@@ -8,6 +8,7 @@ import com.curso.bestTravel.domain.repository.FlyRepository;
 import com.curso.bestTravel.domain.repository.HotelRepository;
 import com.curso.bestTravel.domain.repository.TourRepository;
 import com.curso.bestTravel.infraestructure.abstract_services.ITourService;
+import com.curso.bestTravel.infraestructure.helpers.CustomerHelper;
 import com.curso.bestTravel.infraestructure.helpers.TourHelper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,7 @@ public class TourService implements ITourService {
     private final HotelRepository hotelRepository;
     private final CustomerRepository customerRepository;
     private final TourHelper tourHelper;
+    private final CustomerHelper customerHelper;
 
 
     @Override
@@ -44,11 +46,13 @@ public class TourService implements ITourService {
 
         var tourToSave = TourEntity.builder()
                 .tickets(this.tourHelper.createTickets(flights,costumer))
-                .reservations(this.tourHelper.createReservations(hotels,costumer))
+                .reservations(this.tourHelper.createReservations( hotels,costumer))
                 .customer(costumer)
                 .build();
 
         var tourSaved = this.tourRepository.save(tourToSave);
+
+        this.customerHelper.incrase(costumer.getDni(),TourService.class);
 
         return TourResponse.builder()
                 .reservationIds(tourSaved.getReservations()
@@ -117,11 +121,18 @@ public class TourService implements ITourService {
 
     @Override
     public void removeReservation(Long tourId,UUID reservationId) {
-
+        var tourUpdate = this.tourRepository.findById(tourId).orElseThrow();
+        tourUpdate.removeReservation(reservationId);
+        this.tourRepository.save(tourUpdate);
     }
 
     @Override
-    public UUID addReservation(Long reservationId, Long tourId) {
-        return null;
+    public UUID addReservation(Long tourId, Long  hotelId, Integer totalDays) {
+       var tourUpdate = this.tourRepository.findById(tourId).orElseThrow();
+       var hotel = this.hotelRepository.findById(hotelId).orElseThrow();
+       var reservation = this.tourHelper.createReservation(hotel,tourUpdate.getCustomer(), totalDays);
+       tourUpdate.addReservation(reservation);
+       this.tourRepository.save(tourUpdate);
+       return  reservation.getId();
     }
 }
