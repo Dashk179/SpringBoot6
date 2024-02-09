@@ -8,6 +8,7 @@ import com.curso.bestTravel.domain.repository.FlyRepository;
 import com.curso.bestTravel.domain.repository.HotelRepository;
 import com.curso.bestTravel.domain.repository.TourRepository;
 import com.curso.bestTravel.infraestructure.abstract_services.ITourService;
+import com.curso.bestTravel.infraestructure.helpers.BlackListHelper;
 import com.curso.bestTravel.infraestructure.helpers.CustomerHelper;
 import com.curso.bestTravel.infraestructure.helpers.TourHelper;
 import lombok.AllArgsConstructor;
@@ -30,11 +31,12 @@ public class TourService implements ITourService {
     private final CustomerRepository customerRepository;
     private final TourHelper tourHelper;
     private final CustomerHelper customerHelper;
+    private BlackListHelper blackListHelper;
 
 
     @Override
     public TourResponse create(TourRequest request) {
-
+        blackListHelper.isInBlackListCutomer(request.getCustomerId());
         var costumer = customerRepository.findById(request.getCustomerId()).orElseThrow();
         var flights = new HashSet<FlyEntity>();
 

@@ -11,6 +11,7 @@ import com.curso.bestTravel.domain.repository.CustomerRepository;
 import com.curso.bestTravel.domain.repository.HotelRepository;
 import com.curso.bestTravel.domain.repository.ReservationRepository;
 import com.curso.bestTravel.infraestructure.abstract_services.IReservationService;
+import com.curso.bestTravel.infraestructure.helpers.BlackListHelper;
 import com.curso.bestTravel.infraestructure.helpers.CustomerHelper;
 import com.curso.bestTravel.util.exceptions.IdNotFoundException;
 import lombok.AllArgsConstructor;
@@ -35,9 +36,11 @@ public class ReservationService implements IReservationService {
     private final CustomerRepository customerRepository;
     private final ReservationRepository reservationRepository;
     private final CustomerHelper customerHelper;
+    private BlackListHelper blackListHelper;
 
     @Override
     public ReservationResponse create(ReservationRequest reservationRequest) {
+        blackListHelper.isInBlackListCutomer(reservationRequest.getIdClient());
         var hotel = this.hotelRepository.findById(reservationRequest.getIdHotel()).orElseThrow(()-> new IdNotFoundException("hotel"));
         var customer = customerRepository.findById(reservationRequest.getIdClient()).orElseThrow(()-> new IdNotFoundException("customer"));
 

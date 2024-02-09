@@ -8,6 +8,7 @@ import com.curso.bestTravel.domain.repository.CustomerRepository;
 import com.curso.bestTravel.domain.repository.FlyRepository;
 import com.curso.bestTravel.domain.repository.TicketRepository;
 import com.curso.bestTravel.infraestructure.abstract_services.ITicketService;
+import com.curso.bestTravel.infraestructure.helpers.BlackListHelper;
 import com.curso.bestTravel.infraestructure.helpers.CustomerHelper;
 import com.curso.bestTravel.util.BestTravelUtil;
 import lombok.AllArgsConstructor;
@@ -31,8 +32,10 @@ public class TicketService implements ITicketService {
     private final CustomerRepository customerRepository;
     private final TicketRepository ticketRepository;
     private final CustomerHelper customerHelper;
+    private BlackListHelper blackListHelper;
     @Override
     public TicketResponse create(TicketRequest ticketRequest) {
+        blackListHelper.isInBlackListCutomer(ticketRequest.getIdClient());
         var fly= flyRepository.findById(ticketRequest.getIdFly()).orElseThrow();
         var customer = customerRepository.findById(ticketRequest.getIdClient()).orElseThrow();
 

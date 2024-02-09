@@ -22,6 +22,6 @@ public class ReservationRequest implements Serializable {
     @NotNull(message = "total days is mandatory")
     private Integer totalDays;
 //    @Pattern(regexp = "^(.+)@(.+)$" )
-    @Email
+    @Email(message = "Invalid email")
     private String email;
 }
