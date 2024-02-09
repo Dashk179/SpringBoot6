@@ -1,5 +1,7 @@
 package com.curso.bestTravel.api.controller.error_handler;
 
+import com.curso.bestTravel.api.models.responses.BaseErrorResponse;
+import com.curso.bestTravel.api.models.responses.ErrorResponse;
 import com.curso.bestTravel.util.exceptions.IdNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -12,7 +14,11 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class BadResquestController {
 
     @ExceptionHandler(IdNotFoundException.class)
-    public String handleIdNotFount(IdNotFoundException exception){
-        return exception.getMessage();
+    public BaseErrorResponse handleIdNotFount(IdNotFoundException exception){
+        return ErrorResponse.builder()
+                .message(exception.getMessage())
+                .status(HttpStatus.BAD_REQUEST.name())
+                .code(HttpStatus.BAD_REQUEST.value())
+                .build();
     }
 }
