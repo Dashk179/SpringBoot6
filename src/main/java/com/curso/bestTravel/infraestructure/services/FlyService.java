@@ -4,7 +4,7 @@ import com.curso.bestTravel.api.models.responses.FlyResponse;
 import com.curso.bestTravel.domain.entities.FlyEntity;
 import com.curso.bestTravel.domain.repository.FlyRepository;
 import com.curso.bestTravel.infraestructure.abstract_services.IFlyService;
-import com.curso.bestTravel.util.SortType;
+import com.curso.bestTravel.util.enums.SortType;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;

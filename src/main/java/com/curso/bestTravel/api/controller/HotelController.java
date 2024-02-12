@@ -2,7 +2,7 @@ package com.curso.bestTravel.api.controller;
 
 import com.curso.bestTravel.api.models.responses.HotelResponse;
 import com.curso.bestTravel.infraestructure.abstract_services.IHotelService;
-import com.curso.bestTravel.util.SortType;
+import com.curso.bestTravel.util.enums.SortType;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;

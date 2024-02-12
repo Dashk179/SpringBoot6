@@ -1,5 +1,7 @@
 package com.curso.bestTravel.api.models.request;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,5 +14,7 @@ import java.io.Serializable;
 @Data
 @Builder
 public class TourFlyRequest implements Serializable {
+   @Positive
+   @NotNull(message = "Id fly is mandatory")
    public Long id;
 }

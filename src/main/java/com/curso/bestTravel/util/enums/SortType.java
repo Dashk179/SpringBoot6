@@ -1,4 +1,4 @@
-package com.curso.bestTravel.util;
+package com.curso.bestTravel.util.enums;
 
 public enum SortType {
     LOWER,

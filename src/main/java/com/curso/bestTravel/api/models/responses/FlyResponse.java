@@ -1,9 +1,6 @@
 package com.curso.bestTravel.api.models.responses;
 
-import com.curso.bestTravel.util.AeroLine;
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import com.curso.bestTravel.util.enums.AeroLine;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
