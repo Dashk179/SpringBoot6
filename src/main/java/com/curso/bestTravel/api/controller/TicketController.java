@@ -3,6 +3,7 @@ package com.curso.bestTravel.api.controller;
 import com.curso.bestTravel.api.models.request.TicketRequest;
 import com.curso.bestTravel.api.models.responses.TicketResponse;
 import com.curso.bestTravel.infraestructure.abstract_services.ITicketService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping(path = "ticket")
 @AllArgsConstructor
+@Tag(name = "Ticket")
 
 public class TicketController {
 

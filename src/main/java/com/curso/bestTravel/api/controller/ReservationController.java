@@ -5,6 +5,7 @@ import com.curso.bestTravel.api.models.request.TicketRequest;
 import com.curso.bestTravel.api.models.responses.ReservationResponse;
 import com.curso.bestTravel.api.models.responses.TicketResponse;
 import com.curso.bestTravel.infraestructure.abstract_services.IReservationService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Value;
@@ -19,6 +20,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping(path = "reservation")
 @AllArgsConstructor
+@Tag(name = "Reservation")
 
 public class ReservationController {
     private final IReservationService reservationService;

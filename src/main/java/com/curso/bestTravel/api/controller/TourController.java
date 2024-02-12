@@ -4,6 +4,7 @@ import com.curso.bestTravel.api.models.request.TourRequest;
 import com.curso.bestTravel.api.models.responses.TourResponse;
 import com.curso.bestTravel.infraestructure.abstract_services.ITourService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping(path = "tour")
 @AllArgsConstructor
+@Tag(name = "Tour")
 
 public class TourController{
 
