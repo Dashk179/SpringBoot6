@@ -1,9 +1,13 @@
 package com.curso.bestTravel.api.controller;
 
 import com.curso.bestTravel.api.models.request.TourRequest;
+import com.curso.bestTravel.api.models.responses.ErrorsResponse;
 import com.curso.bestTravel.api.models.responses.TourResponse;
 import com.curso.bestTravel.infraestructure.abstract_services.ITourService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +26,13 @@ import java.util.UUID;
 public class TourController{
 
     private final ITourService tourService;
+    @ApiResponse(
+            responseCode = "400",
+            description = "When the request have a field invalid we response this",
+            content = {
+                    @Content(mediaType = "aplication/json",schema = @Schema(implementation = ErrorsResponse.class))
+            }
+    )
 @Operation(summary = "Save in system a tour based in list oof hotels and flights")
     @PostMapping
     public ResponseEntity<TourResponse> post(@RequestBody TourRequest request){

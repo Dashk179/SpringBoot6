@@ -2,9 +2,14 @@ package com.curso.bestTravel.api.controller;
 
 import com.curso.bestTravel.api.models.request.ReservationRequest;
 import com.curso.bestTravel.api.models.request.TicketRequest;
+import com.curso.bestTravel.api.models.responses.ErrorsResponse;
 import com.curso.bestTravel.api.models.responses.ReservationResponse;
 import com.curso.bestTravel.api.models.responses.TicketResponse;
 import com.curso.bestTravel.infraestructure.abstract_services.IReservationService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -25,6 +30,14 @@ import java.util.UUID;
 public class ReservationController {
     private final IReservationService reservationService;
 
+    @ApiResponse(
+            responseCode = "400",
+            description = "When the request have a field invalid we response this",
+    content = {
+    @Content(mediaType = "aplication/json",schema = @Schema(implementation = ErrorsResponse.class))
+    }
+    )
+    @Operation(summary = "Save in system un reservation with the fly passed in parameter")
     @PostMapping
     public ResponseEntity<ReservationResponse> post(@Valid  @RequestBody ReservationRequest request){
         return ResponseEntity.ok(reservationService.create(request));

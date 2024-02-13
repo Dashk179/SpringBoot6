@@ -1,8 +1,13 @@
 package com.curso.bestTravel.api.controller;
 
 import com.curso.bestTravel.api.models.request.TicketRequest;
+import com.curso.bestTravel.api.models.responses.ErrorsResponse;
 import com.curso.bestTravel.api.models.responses.TicketResponse;
 import com.curso.bestTravel.infraestructure.abstract_services.ITicketService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +27,14 @@ import java.util.UUID;
 public class TicketController {
 
     private final ITicketService ticketService;
-
+    @ApiResponse(
+            responseCode = "400",
+            description = "When the request have a field invalid we response this",
+            content = {
+                    @Content(mediaType = "aplication/json",schema = @Schema(implementation = ErrorsResponse.class))
+            }
+    )
+    @Operation(summary = "Save in system un reservation with the fly passed in parameter")
     @PostMapping
     public ResponseEntity<TicketResponse> post(@RequestBody TicketRequest request){
         return ResponseEntity.ok(ticketService.create(request));
