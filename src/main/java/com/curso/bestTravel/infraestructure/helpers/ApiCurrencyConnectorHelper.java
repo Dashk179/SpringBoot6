@@ -1,6 +1,6 @@
 package com.curso.bestTravel.infraestructure.helpers;
 
-import com.curso.bestTravel.infraestructure.dtos.CurrencyDtos;
+import com.curso.bestTravel.infraestructure.dtos.CurrencyDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -22,7 +22,7 @@ public class ApiCurrencyConnectorHelper {
     private static final String  SYMBOL_CURRENCY_QUERY_PARAM = "&symbols={symbol}";
     private static final String  CURRENCY_PATH = "/fixer/latest";
 
-    public CurrencyDtos getCurrency(Currency currency){
+    public CurrencyDto getCurrency(Currency currency){
         return this.currencyWebClient
                 .get()
                 .uri(uri ->
@@ -31,7 +31,7 @@ public class ApiCurrencyConnectorHelper {
                                 .query(SYMBOL_CURRENCY_QUERY_PARAM)
                                 .build(baseCurrency,currency.getCurrencyCode()))
                 .retrieve()
-                .bodyToMono(CurrencyDtos.class)
+                .bodyToMono(CurrencyDto.class)
                 .block();
     }
 }

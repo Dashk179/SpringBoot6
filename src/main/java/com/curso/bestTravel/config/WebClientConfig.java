@@ -15,7 +15,7 @@ private String apiKey;
     @Value(value = "${api.api-key.header}")
 private String apiKeyHeader;
 
-    @Bean(name = "currency")
+    @Bean
     public WebClient currencywebClient(){
         return WebClient.
                 builder().
@@ -24,13 +24,4 @@ private String apiKeyHeader;
                 build();
     }
 
-    @Bean(name = "base")
-    @Primary
-    public WebClient basewebClient(){
-        return WebClient.
-                builder().
-                baseUrl(baseUrl).
-                defaultHeader(apiKeyHeader,apiKey).
-                build();
-    }
 }

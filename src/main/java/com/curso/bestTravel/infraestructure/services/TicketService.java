@@ -10,7 +10,9 @@ import com.curso.bestTravel.domain.repository.TicketRepository;
 import com.curso.bestTravel.infraestructure.abstract_services.ITicketService;
 import com.curso.bestTravel.infraestructure.helpers.BlackListHelper;
 import com.curso.bestTravel.infraestructure.helpers.CustomerHelper;
+import com.curso.bestTravel.infraestructure.helpers.EmailHelper;
 import com.curso.bestTravel.util.BestTravelUtil;
+import com.curso.bestTravel.util.enums.Tables;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -20,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.UUID;
 
 @Transactional
@@ -33,6 +36,7 @@ public class TicketService implements ITicketService {
     private final TicketRepository ticketRepository;
     private final CustomerHelper customerHelper;
     private BlackListHelper blackListHelper;
+    private final EmailHelper emailHelper;
     @Override
     public TicketResponse create(TicketRequest ticketRequest) {
         blackListHelper.isInBlackListCutomer(ticketRequest.getIdClient());
@@ -52,7 +56,7 @@ public class TicketService implements ITicketService {
         var ticketPersisted = this.ticketRepository.save(ticketToPersist);
 
         customerHelper.incrase(customer.getDni(), TicketService.class);
-
+        if (Objects.nonNull(ticketRequest.getEmail()))this.emailHelper.sendMail(ticketRequest.getEmail(),customer.getFullName(), Tables.ticket.name());
         log.info("Ticket saved with id {}" , ticketPersisted.getId());
 
         return this.enittyToResponse(ticketToPersist);

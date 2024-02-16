@@ -10,6 +10,7 @@ import com.curso.bestTravel.domain.repository.TourRepository;
 import com.curso.bestTravel.infraestructure.abstract_services.ITourService;
 import com.curso.bestTravel.infraestructure.helpers.BlackListHelper;
 import com.curso.bestTravel.infraestructure.helpers.CustomerHelper;
+import com.curso.bestTravel.infraestructure.helpers.EmailHelper;
 import com.curso.bestTravel.infraestructure.helpers.TourHelper;
 import com.curso.bestTravel.util.enums.Tables;
 import com.curso.bestTravel.util.exceptions.IdNotFoundException;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -34,6 +36,7 @@ public class TourService implements ITourService {
     private final TourHelper tourHelper;
     private final CustomerHelper customerHelper;
     private BlackListHelper blackListHelper;
+    private final EmailHelper emailHelper;
 
 
     @Override
@@ -57,6 +60,7 @@ public class TourService implements ITourService {
         var tourSaved = this.tourRepository.save(tourToSave);
 
         this.customerHelper.incrase(costumer.getDni(),TourService.class);
+        if (Objects.nonNull(request.getEmail()))this.emailHelper.sendMail(request.getEmail(),costumer.getFullName(), Tables.tour.name());
 
         return TourResponse.builder()
                 .reservationIds(tourSaved.getReservations()
